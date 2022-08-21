@@ -2,14 +2,15 @@ import AuthCard from '@/components/AuthCard'
 import GuestLayout from '@/components/Layouts/GuestLayout'
 import Button from '@/components/uiParts/Button'
 import Label from '@/components/uiParts/Label'
+import useAuth from '@/hooks/useAuth'
 import Link from 'next/link'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
-type InputValueType = {
+export type InputValueType = {
     name: string
     email: string
     password: string
-    passwordConfirmation: string
+    password_confirmation: string
 }
 
 const inputClassName =
@@ -17,10 +18,13 @@ const inputClassName =
 
 const Register = () => {
     const { register, handleSubmit } = useForm<InputValueType>()
+    const { register: registerHooks } = useAuth()
+
     const onSubmit: SubmitHandler<InputValueType> = data => {
-        const { name, email, password, passwordConfirmation } = data
-        console.log('submit: ', { name, email, password, passwordConfirmation })
+        const { name, email, password, password_confirmation } = data
+        registerHooks({ name, email, password, password_confirmation })
     }
+
     return (
         <GuestLayout>
             <AuthCard>
@@ -40,6 +44,7 @@ const Register = () => {
                         <input
                             id="email"
                             type="email"
+                            autoComplete="username"
                             className={inputClassName}
                             {...register('email', { required: true })}
                         />
@@ -49,20 +54,21 @@ const Register = () => {
                         <input
                             id="password"
                             type="password"
-                            className={inputClassName}
                             autoComplete="new-password"
+                            className={inputClassName}
                             {...register('password', { required: true })}
                         />
                     </div>
                     <div className="mt-4">
-                        <Label htmlFor="passwordConfirmation">
+                        <Label htmlFor="password_confirmation">
                             Confirm Password
                         </Label>
                         <input
-                            id="passwordConfirmation"
+                            id="password_confirmation"
                             type="password"
+                            autoComplete="new-password"
                             className={inputClassName}
-                            {...register('passwordConfirmation', {
+                            {...register('password_confirmation', {
                                 required: true,
                             })}
                         />
