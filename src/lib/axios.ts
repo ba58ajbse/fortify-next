@@ -1,6 +1,6 @@
 import Axios from 'axios'
 
-const baseURL = process.env.NODE_ENV === 'development' ? 'http://localhost' : ''
+const baseURL = process.env.NEXT_PUBLIC_BACKEND_URL
 
 const axios = Axios.create({
     baseURL,
