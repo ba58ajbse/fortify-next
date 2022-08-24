@@ -2,22 +2,24 @@ import AuthCard from '@/components/AuthCard'
 import GuestLayout from '@/components/Layouts/GuestLayout'
 import Button from '@/components/uiParts/Button'
 import Label from '@/components/uiParts/Label'
+import useAuth from '@/hooks/useAuth'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
-type InputValueType = {
+export type InputValueType = {
     email: string
     password: string
-    rememberMe: boolean
+    rememberMe?: boolean
 }
 const inputClassName =
     'block mt-1 p-2 w-full rounded-md shadow-sm border-gray-300 text-slate-200 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50'
 
 const Login = () => {
     const { register, handleSubmit } = useForm<InputValueType>()
+    const { login } = useAuth()
 
     const onSubmit: SubmitHandler<InputValueType> = data => {
         const { email, password, rememberMe } = data
-        console.log('submit', { email, password, rememberMe })
+        login({ email, password, rememberMe })
     }
 
     return (

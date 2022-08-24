@@ -1,5 +1,6 @@
 import axios from '@/lib/axios'
 import { InputValueType as RegisterValue } from '@/pages/register'
+import { InputValueType as LoginValue } from '@/pages/login'
 import { useRouter } from 'next/router'
 
 const useAuth = () => {
@@ -35,7 +36,22 @@ const useAuth = () => {
             .catch(err => console.log(err))
     }
 
-    return { register }
+    const login = async ({ email, password, rememberMe }: LoginValue) => {
+        await csrf()
+        await axios
+            .post('/api/login', { email, password, rememberMe })
+            .then(res => {
+                console.log({ res })
+                if (res?.status === 200) {
+                    router.push('/dashboard')
+                } else {
+                    throw new Error('login failed.')
+                }
+            })
+            .catch(err => console.log(err))
+    }
+
+    return { register, login }
 }
 
 export default useAuth
