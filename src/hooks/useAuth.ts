@@ -51,7 +51,14 @@ const useAuth = () => {
             .catch(err => console.log(err))
     }
 
-    return { register, login }
+    const logout = async () => {
+        await axios.post('/api/logout').then(res => {
+            console.log('logout', res)
+            router.push('/')
+        })
+    }
+
+    return { register, login, logout }
 }
 
 export default useAuth
